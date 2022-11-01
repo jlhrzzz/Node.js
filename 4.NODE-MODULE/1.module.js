@@ -32,5 +32,11 @@ console.log(path.dirname('a/b/c')); // 取当前文件的父路径 __dirname的�
 
 // 字符串如何变成js来执行？
 // eval 会受执行环境影响
-// new Function "模板引擎的实现原理" 它不受环境影响
-// node中自己实现了一个模块 vm
+// new Function "模板引擎的实现原理" 可以获取全局变量，还是会有污染的清空
+// node中自己实现了一个模块 vm 不受影响 (沙箱环境) 快照 (执行前记录信息，执行后还原信息) proxy来实现
+
+global.a = 100
+const vm = require('vm')
+vm.runInThisContext(`console.log(a)`) // 在node中全局变量是在多个模块下共享的，所以不要通过global来定义属性
+
+// 全局 1个上下文
