@@ -80,6 +80,10 @@ Promise.resolve().then(() => { // then1
   .then(() => {
     console.log('then5'); //7
   })
+// 队列是一个 因为时微任务中创造的微任务
+// 微任务队列 1.[then1] 2.[then1-1,then2] 3.[x.then,then3] 4.[x.then,then4] 5.[then1-2,then5]
+
+// 按照promise a+规范执行的结果 但是我们的浏览器规定了 如果promise return了一个promise，会额外在开辟一个异步方法 (相当于用多了一次then)
 
 // 微任务队列 [x.then,then3,then1-2,then4]
 // then1 then1-1 then2 then3 then1-2 then4 then5
