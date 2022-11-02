@@ -39,4 +39,11 @@ global.a = 100
 const vm = require('vm')
 vm.runInThisContext(`console.log(a)`) // 在node中全局变量是在多个模块下共享的，所以不要通过global来定义属性
 
+// 总是被创建于全局环境，因此在运行时它们只能访问全局变量和自己的局部变量
+
 // 全局 1个上下文
+    // function (exports,module,require,__direname,filename){var a = 100}
+    // runInThisContext 和 new Function 对不 不需要产生函数
+// runInNewContext
+
+// require的实现，1.读取文件 2.读取到后给文件包装一个函数 3.通过runInThisContext 将他变成js语法   4.调用
