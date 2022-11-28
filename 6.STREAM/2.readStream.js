@@ -10,24 +10,32 @@ let rs = new ReadStream(path.resolve(__dirname, './a.txt'), { // 创建可读流
   encoding: null, // 编码就是buffer
   autoClose: true, // 相当于调用close方法
   // emitClose: false, // 触发一个close事件
-  start: 0,
+  // start: 1,
+  // end: 4,// end 是包后的
   highWaterMark: 3 // 每次读取的数据个数 默认是64 * 1024 字节
 })
 // 他会监听用户，绑定了data事件，就会触发对应的回调，不停的触发
 // 非流动模式 => 流动模式
 rs.on('open', function (fd) {
-  console.log(fd);
+  console.log('open', fd);
 })
 rs.on('data', function (chunk) {
-  console.log(chunk);
-  // rs.pause() // 不再触发data事件
+  console.log(chunk.toString());
+  rs.pause() // 不再触发data事件
 })
+// 30 -> 48 -> 1个字节 -> ascii
 rs.on('end', function () { // 当文件读取完毕后会触发end事件
   console.log('end');
 })
 rs.on('close', function () {
   console.log('close');
 })
+rs.on('error', function (err) {
+  console.log(err, 'err');
+})
 // setInterval(() => {
 //   rs.resume() // 再次触发data事件
 // }, 1000);
+
+// open 和 close 是文件流独有的
+// 我们的可读流 都具备 (on("data"),on("end"),on("error"),resume pause)
